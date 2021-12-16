@@ -59,7 +59,8 @@ int main(int argc, char **argv)
     }    
 
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
-    ORB_SLAM2::System SLAM(argv[1],argv[2],ORB_SLAM2::System::RGBD,true);
+    //ORB_SLAM2::System SLAM(argv[1],argv[2],ORB_SLAM2::System::RGBD,true);
+    ORB_SLAM2::System SLAM(argv[1],argv[2],ORB_SLAM2::System::RGBD,false);
 
     ImageGrabber igb(&SLAM);
 
@@ -77,7 +78,10 @@ int main(int argc, char **argv)
     SLAM.Shutdown();
 
     // Save camera trajectory
-    SLAM.SaveKeyFrameTrajectoryTUM("KeyFrameTrajectory.txt");
+    string results_path="";
+    nh.getParam("results_path", results_path);
+    SLAM.SaveTrajectoryTUM(results_path+"CameraTrajectory.txt");
+    SLAM.SaveKeyFrameTrajectoryTUM(results_path+"KeyFrameTrajectory.txt");
 
     ros::shutdown();
 

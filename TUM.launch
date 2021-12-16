@@ -1,0 +1,14 @@
+<launch>  
+
+	<!-- arguments -->
+	<arg name="settings" />
+	<arg name="vocabulary" default="$(find ORB_SLAM2)/../../../Vocabulary/ORBvoc.txt" />
+	<arg name="sequence" />
+	
+	<arg name="results_path" />
+	<param name="results_path" type="string" value="$(arg results_path)" />
+
+	<!-- orb slam Usage: TUM path_to_vocabulary path_to_settings -->
+	<node pkg="ORB_SLAM2" name="RGBD" type="RGBD" args="$(arg vocabulary) $(arg settings)" required="true" />
+	<node pkg="rosbag" type="play" name="player" output="screen" args="--pause $(arg sequence) /camera/rgb/image_color:=/camera/rgb/image_raw /camera/depth/image:=/camera/depth_registered/image_raw"/>
+</launch>
